@@ -33,21 +33,24 @@ procedure RIRegister_Classes(Cl: TPSRuntimeClassImporter; Streams: Boolean{$IFDE
 implementation
 uses
   Classes;
-
+{$IFNDEF VER130}
 procedure TStringsCapacityR(Self: TStrings; var T: Longint); begin T := Self.Capacity; end;
 procedure TStringsCapacityW(Self: TStrings; T: Longint); begin Self.Capacity := T; end;
 procedure TStringsDelimiterR(Self: TStrings; var T: char); begin T := Self.Delimiter; end;
 procedure TStringsDelimiterW(Self: TStrings; T: char); begin Self.Delimiter:= T; end;
+{$IFNDEF ENDIF}
 {$IFDEF DELPHI2006UP}
 procedure TStringsStrictDelimiterR(Self: TStrings; var T: boolean); begin T := Self.StrictDelimiter; end;
 procedure TStringsStrictDelimiterW(Self: TStrings; T: boolean); begin Self.StrictDelimiter:= T; end;
 {$ENDIF}
+{$IFNDEF VER130}
 procedure TStringsDelimitedTextR(Self: TStrings; var T: string); begin T := Self.DelimitedText; end;
 procedure TStringsDelimitedTextW(Self: TStrings; T: string); begin Self.DelimitedText:= T; end;
 procedure TStringsNameValueSeparatorR(Self: TStrings; var T: char); begin T := Self.NameValueSeparator; end;
 procedure TStringsNameValueSeparatorW(Self: TStrings; T: char); begin Self.NameValueSeparator:= T; end;
 procedure TStringsQuoteCharR(Self: TStrings; var T: char); begin T := Self.QuoteChar; end;
 procedure TStringsQuoteCharW(Self: TStrings; T: char); begin Self.QuoteChar:= T; end;
+{$ENDIF}
 
 procedure TStringsCountR(Self: TStrings; var T: Longint); begin T := Self.Count; end;
 
@@ -88,6 +91,7 @@ begin
   Self.Values[I]:= T;
 end;
 
+{$IFNDEF VER130}
 procedure TStringsValueFromIndexR(Self: TStrings; var T: string; const I: Longint);
 begin
 T := Self.ValueFromIndex[I];
@@ -96,6 +100,7 @@ procedure TStringsValueFromIndexW(Self: TStrings; Const T: String; I: Longint);
 begin
   Self.ValueFromIndex[I]:= T;
 end;
+{$ENDIF}
 
 procedure RIRegisterTStrings(cl: TPSRuntimeClassImporter; Streams: Boolean); // requires TPersistent
 begin
@@ -112,14 +117,17 @@ begin
     RegisterVirtualAbstractMethod(TStringList, @TStringList.Delete, 'Delete');
     RegisterVirtualMethod(@TStrings.IndexOf, 'IndexOf');
     RegisterVirtualAbstractMethod(TStringList, @TStringList.Insert, 'Insert');
-    RegisterPropertyHelper(@TStringsCapacityR, @TStringsCapacityW, 'Capacity');
-    RegisterPropertyHelper(@TStringsDelimiterR, @TStringsDelimiterW, 'DELIMITER');
 {$IFDEF DELPHI2006UP}
     RegisterPropertyHelper(@TStringsStrictDelimiterR, @TStringsStrictDelimiterW, 'StrictDelimiter');
 {$ENDIF}
+{$IFNDEF VER130}
+    RegisterPropertyHelper(@TStringsCapacityR, @TStringsCapacityW, 'Capacity');
+    RegisterPropertyHelper(@TStringsDelimiterR, @TStringsDelimiterW, 'DELIMITER');
     RegisterPropertyHelper(@TStringsDelimitedTextR, @TStringsDelimitedTextW, 'DelimitedText');
     RegisterPropertyHelper(@TStringsNameValueSeparatorR, @TStringsNameValueSeparatorW, 'NameValueSeparator');
     RegisterPropertyHelper(@TStringsQuoteCharR, @TStringsQuoteCharW, 'QuoteChar');
+    RegisterPropertyHelper(@TStringsValueFromIndexR, @TStringsValueFromIndexW, 'ValueFromIndex');
+{$ENDIF}
     RegisterPropertyHelper(@TStringsCountR, nil, 'Count');
     RegisterPropertyHelper(@TStringsTextR, @TStringsTextW, 'Text');
     RegisterPropertyHelper(@TStringsCommaTextR, @TStringsCommatextW, 'CommaText');
@@ -145,7 +153,6 @@ begin
     RegisterVirtualMethod(@TStrings.SetText, 'SetText');
     RegisterPropertyHelper(@TStringsNamesR, nil, 'Names');
     RegisterPropertyHelper(@TStringsValuesR, @TStringsValuesW, 'Values');
-    RegisterPropertyHelper(@TStringsValueFromIndexR, @TStringsValueFromIndexW, 'ValueFromIndex');
     RegisterVirtualMethod(@TSTRINGS.ADDOBJECT, 'AddObject');
     RegisterVirtualMethod(@TSTRINGS.GETTEXT, 'GetText');
     RegisterMethod(@TSTRINGS.INDEXOFOBJECT, 'IndexOfObject');
@@ -154,8 +161,10 @@ begin
   end;
 end;
 
+{$IFNDEF VER130}
 procedure TSTRINGLISTCASESENSITIVE_R(Self: TSTRINGLIST; var T: BOOLEAN); begin T := Self.CASESENSITIVE; end;
 procedure TSTRINGLISTCASESENSITIVE_W(Self: TSTRINGLIST; const T: BOOLEAN); begin Self.CASESENSITIVE := T; end;
+{$ENDIF}
 procedure TSTRINGLISTDUPLICATES_R(Self: TSTRINGLIST; var T: TDUPLICATES); begin T := Self.DUPLICATES; end;
 procedure TSTRINGLISTDUPLICATES_W(Self: TSTRINGLIST; const T: TDUPLICATES); begin Self.DUPLICATES := T; end;
 procedure TSTRINGLISTSORTED_R(Self: TSTRINGLIST; var T: BOOLEAN); begin T := Self.SORTED; end;
@@ -177,7 +186,9 @@ begin
 {$ENDIF}
     RegisterVirtualMethod(@TSTRINGLIST.FIND, 'Find');
     RegisterVirtualMethod(@TSTRINGLIST.SORT, 'Sort');
+{$IFNDEF VER130}
     RegisterPropertyHelper(@TSTRINGLISTCASESENSITIVE_R, @TSTRINGLISTCASESENSITIVE_W, 'CaseSensitive');
+{$ENDIF}
     RegisterPropertyHelper(@TSTRINGLISTDUPLICATES_R, @TSTRINGLISTDUPLICATES_W, 'Duplicates');
     RegisterPropertyHelper(@TSTRINGLISTSORTED_R, @TSTRINGLISTSORTED_W, 'Sorted');
     RegisterEventPropertyHelper(@TSTRINGLISTONCHANGE_R, @TSTRINGLISTONCHANGE_W, 'OnChange');

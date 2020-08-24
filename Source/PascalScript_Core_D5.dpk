@@ -1,6 +1,6 @@
 package PascalScript_Core_D5;
 
-{$R *.res}
+{$R *.RES}
 {$ALIGN ON}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -23,7 +23,6 @@ package PascalScript_Core_D5;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'RemObjects Pascal Script - Core Package'}
-{$DESIGNONLY}
 {$IMPLICITBUILD OFF}
 
 requires
